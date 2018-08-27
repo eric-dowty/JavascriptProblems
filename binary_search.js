@@ -1,27 +1,24 @@
-var BinarySearch = require("../fizz_buzz.js").BinarySearch;
+var exports = module.exports={};
 
-describe("BinarySearch", function() {
-  it('should return true if n is root node', function() {
-    var data = [0,1,2,3,4,5,6,7,8];
+exports.BinarySearch = class BinarySearch {
+  constructor(data) {
+    this.data = data;
+    this.found = false;
+  }
 
-    expect(new BinarySearch(data).find(4)).toEqual(true)
-  });
+  find(n, i_start, i_end) {
+    var i_start = i_start || 0;
+    var i_end = i_end || this.data.length - 1;
+    var i_mid = (i_start + i_end) / 2;
 
-  it('should return true if n is in left part of tree', function() {
-    var data = [0,1,2,3,4,5,6,7,8];
+    if (this.data[i_mid] && (this.data[i_mid] === n)) {
+      this.found = true;
+    } else if (this.data[i_mid] && (this.data[i_mid] > n)) {
+      this.find(n, i_start, i_mid--);
+    } else if (this.data[i_mid] && (this.data[i_mid] < n)) {
+      this.find(n, i_mid++, i_end);
+    }
 
-    expect(new BinarySearch(data).find(1)).toEqual(true)
-  });
-
-  it('should return true if n is in right part of tree', function() {
-    var data = [0,1,2,3,4,5,6,7,8];
-
-    expect(new BinarySearch(data).find(7)).toEqual(true)
-  });
-
-  it('should return false if n is not in tree', function() {
-    var data = [0,1,2,3,4,5,6,7,8];
-
-    expect(new BinarySearch(data).find(9)).toEqual(false)
-  });
+    return this.found;
+  }
 };
